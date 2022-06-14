@@ -61,7 +61,8 @@ class CameraFragment : Fragment() {
                 val bundle = bundleOf(Pair("imagePath", it))
                 viewModel.newImagePath.value = null
 
-                // TODO GO TO NEW VIEW
+                view.findNavController()
+                    .navigate(R.id.action_cameraFragment_to_findInsectFragment, bundle)
             }
         }
     }
