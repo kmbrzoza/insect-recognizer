@@ -21,6 +21,18 @@
         <action
             android:id="@+id/action_cameraFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_findInsectFragment"
+            app:destination="@id/findInsectFragment" />
+    </fragment>
+
+    <!--    FIND INSECT  -->
+    <fragment
+        android:id="@+id/findInsectFragment"
+        android:name="com.example.insectopedia.fragments.FindInsectFragment">
+        <action
+            android:id="@+id/action_findInsectFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
 
 </navigation>
