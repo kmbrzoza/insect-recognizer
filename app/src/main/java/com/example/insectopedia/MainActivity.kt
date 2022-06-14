@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         checkPermissions()
-        // TODO FIRE BASE SIGN IN
+        FirebaseService.signIn(this, baseContext)
     }
 
     override fun onRequestPermissionsResult(

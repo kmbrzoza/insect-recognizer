@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "849665274380",
+    "project_id": "insectopedia-21608",
+    "storage_bucket": "insectopedia-21608.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849665274380:android:ec62cef860d1955a037429",
+        "android_client_info": {
+          "package_name": "pl.polsl.insectopedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849665274380-kbe7a0qe2havk08hfp75prbg71ijj2i2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzpjiccOmY6pO2Nlpmw_GNbG-dsZqDAZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849665274380-kbe7a0qe2havk08hfp75prbg71ijj2i2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
