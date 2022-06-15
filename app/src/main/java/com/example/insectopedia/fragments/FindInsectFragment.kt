@@ -1,12 +1,10 @@
 package com.example.insectopedia.fragments
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -66,6 +64,21 @@ class FindInsectFragment : Fragment() {
     }
 
     private fun processResponse(response: Task<JsonElement>) {
-        // TODO Process Response
+        response.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val insect = viewModel.processResult(task.result!!)
+
+                if (insect == null) {
+                    // TODO Show info about unrecognized insect
+
+                    viewModel.deleteImage()
+                } else {
+                    // TODO Show info about recognized insect
+
+                }
+            } else {
+                Toast.makeText(activity, "Error sending picture.", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }
