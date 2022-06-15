@@ -1,10 +1,15 @@
 package com.example.insectopedia.fragments
 
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +19,8 @@ import com.example.insectopedia.factories.FindInsectViewModelFactory
 import com.example.insectopedia.viewmodels.FindInsectViewModel
 import com.google.android.gms.tasks.Task
 import com.google.gson.JsonElement
+import android.text.style.UnderlineSpan
+import android.text.SpannableString
 
 class FindInsectFragment : Fragment() {
     private lateinit var viewModel: FindInsectViewModel
@@ -47,6 +54,11 @@ class FindInsectFragment : Fragment() {
             }
         }
 
+        if (viewModel.imageExists()) {
+            view.findViewById<ImageView>(R.id.find_insect_image)
+                .setImageBitmap(BitmapFactory.decodeFile(viewModel.imagePath))
+        }
+
         val response = viewModel.processImage()
 
         if (response == null) {
@@ -69,12 +81,21 @@ class FindInsectFragment : Fragment() {
                 val insect = viewModel.processResult(task.result!!)
 
                 if (insect == null) {
-                    // TODO Show info about unrecognized insect
-
+                    view?.findViewById<TextView>(R.id.find_insect_name)?.text =
+                        context?.resources?.getString(R.string.unrecognized_insect)
                     viewModel.deleteImage()
                 } else {
-                    // TODO Show info about recognized insect
+                    view?.findViewById<TextView>(R.id.find_insect_name)?.text = insect.name
 
+                    val wiki = view?.findViewById<TextView>(R.id.find_insect_wiki)
+                    val content = SpannableString(context?.resources?.getString(R.string.wiki))
+                    content.setSpan(UnderlineSpan(), 0, content.length, 0)
+                    wiki?.text = content
+
+                    wiki?.setOnClickListener {
+                        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(insect.wikiURL))
+                        context?.startActivity(browserIntent)
+                    }
                 }
             } else {
                 Toast.makeText(activity, "Error sending picture.", Toast.LENGTH_LONG).show()
