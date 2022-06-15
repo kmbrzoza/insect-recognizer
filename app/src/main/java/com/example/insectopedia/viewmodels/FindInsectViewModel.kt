@@ -1,9 +1,14 @@
 package com.example.insectopedia.viewmodels
+
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.lifecycle.AndroidViewModel
+import com.example.insectopedia.model.DefinedInsects
+import com.example.insectopedia.model.Insect
+import com.example.insectopedia.model.InsectopediaDAO
+import com.example.insectopedia.model.InsectopediaDatabase
 import com.google.android.gms.tasks.Task
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.ktx.functions
@@ -21,6 +26,8 @@ class FindInsectViewModel(application: Application, val imagePath: String) :
 
     private lateinit var functions: FirebaseFunctions
     private val resultsNumber: Int = 15
+    private val insectsDao: InsectopediaDAO = InsectopediaDatabase.getInstance(application).dao
+
 
     fun processImage(): Task<JsonElement>? {
         if (!File(imagePath).exists()) {
@@ -93,6 +100,56 @@ class FindInsectViewModel(application: Application, val imagePath: String) :
                 val result = task.result?.data
                 JsonParser.parseString(Gson().toJson(result))
             }
+    }
+
+    fun processResult(result: JsonElement): Insect? {
+        val resultsFound = result.asJsonArray[0].asJsonObject["labelAnnotations"].asJsonArray
+
+        val foundDefinedInsect = findInsect(resultsFound, DefinedInsects.insects)
+            ?: findInsect(resultsFound, DefinedInsects.popularInsects)
+
+        var insect: Insect? = null
+
+        if (foundDefinedInsect != null) {
+            insect = createInsect(foundDefinedInsect)
+            insectsDao.insert(insect)
+        }
+
+        processFinished = true
+        return insect
+    }
+
+    private fun findInsect(
+        results: JsonArray,
+        insectsMap: Map<String, String>
+    ): Map.Entry<String, String>? {
+        for (label in results) {
+            val detectedName = label.asJsonObject["description"].toString().lowercase()
+
+            for (insect in insectsMap) {
+                if (detectedName.contains(insect.key)) {
+                    return insect
+                }
+            }
+        }
+        return null
+    }
+
+    private fun createInsect(definedInsect: Map.Entry<String, String>): Insect {
+        val insectName = definedInsect.key.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+        val date = SimpleDateFormat("HH:mm dd.MM.yyyy").format(Date())
+
+        return Insect(
+            insectName,
+            definedInsect.value,
+            imagePath,
+            date
+        )
     }
 
     fun imageExists(): Boolean = File(imagePath).exists()
