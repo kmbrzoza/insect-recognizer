@@ -18,6 +18,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.insectopedia.R
 
 class FindInsectViewModel(application: Application, val imagePath: String) :
     AndroidViewModel(application) {
@@ -46,8 +47,8 @@ class FindInsectViewModel(application: Application, val imagePath: String) :
     }
 
     private fun convertImageToBitmap(path: String): Bitmap {
-        return BitmapFactory.decodeFile(path)
-        //return BitmapFactory.decodeResource(getApplication<Application>().applicationContext.resources, R.drawable.biedronka)
+//        return BitmapFactory.decodeFile(path)
+        return BitmapFactory.decodeResource(getApplication<Application>().applicationContext.resources, R.drawable.biedronka)
     }
 
     private fun scaleBitmap(bitmap: Bitmap, maxDimension: Int = 1200): Bitmap {
