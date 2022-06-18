@@ -26,5 +26,11 @@ class MainFragment : Fragment() {
                 view.findNavController().navigate(R.id.action_mainFragment_to_cameraFragment)
             }
         }
+
+        view.findViewById<Button>(R.id.main_button_history).apply {
+            setOnClickListener {
+                view.findNavController().navigate(R.id.action_mainFragment_to_historyFragment)
+            }
+        }
     }
 }
