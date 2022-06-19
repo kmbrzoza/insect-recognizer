@@ -47,8 +47,8 @@ class FindInsectViewModel(application: Application, val imagePath: String) :
     }
 
     private fun convertImageToBitmap(path: String): Bitmap {
-//        return BitmapFactory.decodeFile(path)
-        return BitmapFactory.decodeResource(getApplication<Application>().applicationContext.resources, R.drawable.biedronka)
+        return BitmapFactory.decodeFile(path)
+        //return BitmapFactory.decodeResource(getApplication<Application>().applicationContext.resources, R.drawable.biedronka)
     }
 
     private fun scaleBitmap(bitmap: Bitmap, maxDimension: Int = 1200): Bitmap {
