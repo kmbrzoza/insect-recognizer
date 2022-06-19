@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task
 import com.google.gson.JsonElement
 import android.text.style.UnderlineSpan
 import android.text.SpannableString
+import androidx.activity.addCallback
 
 class FindInsectFragment : Fragment() {
     private lateinit var viewModel: FindInsectViewModel
@@ -47,6 +48,10 @@ class FindInsectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            backToCameraFragment()
+        }
 
         val buttonBack = view.findViewById<Button>(R.id.find_insect_back).apply {
             setOnClickListener {
